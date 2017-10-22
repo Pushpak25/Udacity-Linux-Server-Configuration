@@ -51,6 +51,7 @@ Now verify by logging into system with newly created user<br>
 
 # Secure your server.
 <br>
+
 ## Update all currently installed packages
 ```sudo apt-get update``` <br>
 ```sudo apt-get upgrade``` <br>
@@ -70,6 +71,7 @@ First, open Port 2200 for TCP under network tab of Amazon LightSail account
 <br>
 Now verify your changes by ```ssh -i ~/.ssh/id_rsa -p 2200 grader@35.154.72.191```
 <br>
+
 ## Configure the Uncomplicated Firewall (UFW) 
 <br>```sudo ufw status
 sudo ufw default deny incoming
@@ -80,11 +82,14 @@ sudo ufw allow 123/udp
 sudo ufw show added
 sudo ufw enable
 sudo ufw status```
+
 <br>
 # Prepare to deploy your project.
 <br>
+
 ## Configure the local timezone to UTC
 <br>Configure timezone using ```sudo dpkg-reconfigure tzdata``` ( select none of the above and then set timezone to UTC). Infact, it's already configured to UTC <br>
+
 ## Install and configure Apache to serve a Python mod_wsgi application
 <br>Install apache using ```sudo apt-get install apache2``` 
 <br>Type 35.154.72.191 (public IP address) on URL. If you see ubuntu apache default page, your installation of apache2 is success
@@ -164,7 +169,7 @@ After this, execute this command ```sudo nano /etc/apache2/sites-available/catal
 ```
 <br>
 In the next step, make a file catalog.wsgi under /var/www/catalog folder and place the below content there
-```
+```Python
 #!/usr/bin/python
 import sys
 import logging
