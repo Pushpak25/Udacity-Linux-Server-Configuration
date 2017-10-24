@@ -170,20 +170,26 @@ If you can see Hello World! upon page reload of 35.154.72.191, your installation
 
 ```mv project.py __init__.py```<br>
 Edit database_setup.py and lotsofmenus.py to change ```engine = create_engine('sqlite:///catalog.db')``` to ```engine = create_engine('postgresql://catalog:password@localhost/catalog')``` as we'll be using postgresql for this project<br>
-```sudo apt-get install python-pip
+
+``` 
+sudo apt-get install python-pip
 pip install httplib2
 pip install requests
 sudo pip install --upgrade oauth2client
 sudo pip install sqlalchemy
 pip install Flask-SQLAlchemy
-sudo pip install flask-seasurf```
+sudo pip install flask-seasurf 
+```
+
 <br>
 To make github repository inaccessible make a .htaccess file in /var/www/catalog.
 paste the content - RedirectMatch 404 /\.git in this file and save it .
 <br>
 
 ## Deploy Flask Application
+
 <br>
+
 ```
 sudo apt-get install python-dev
 sudo a2enmod wsgi
@@ -191,9 +197,15 @@ sudo pip install virtualenv
 sudo virtualenv venv
 source venv/bin/activate
 ```
+
 <br>
-After this, execute this command ```sudo nano /etc/apache2/sites-available/catalog.conf``` and place the below content in catalog.conf file. 
+After this, execute this command 
+
+```sudo nano /etc/apache2/sites-available/catalog.conf``` 
+and place the below content in catalog.conf file. 
+
 ```
+
 <VirtualHost *:80>
     ServerName 35.154.72.191
     ServerAdmin admin@35.154.72.191
@@ -214,8 +226,10 @@ After this, execute this command ```sudo nano /etc/apache2/sites-available/catal
     LogLevel warn
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 ```
+
 <br>
 In the next step, make a file catalog.wsgi under /var/www/catalog folder and place the below content there
+
 ```Python
 #!/usr/bin/python
 import sys
@@ -226,7 +240,9 @@ sys.path.insert(0,"/var/www/catalog/")
 from catalog import app as application
 application.secret_key = 'super_secret_key' #This should match your secret key in __init__.py
 ```
+
 After that execute the below 2 commands
+
 ```
 sudo a2ensite catalog
 sudo service apache2 restart
