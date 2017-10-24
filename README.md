@@ -169,7 +169,7 @@ If you can see Hello World! upon page reload of 35.154.72.191, your installation
 ```cd catalog```<br>
 
 ```mv project.py __init__.py```<br>
-Edit database_setup.py and lotsofmenus.py to change ```engine = create_engine('sqlite:///catalog.db')``` to ```engine = create_engine('postgresql://catalog:password@localhost/catalog')``` as we'll be using postgresql for this project<br>
+Edit database_setup.py and lotsofmenus.py to change ```engine = create_engine('sqlite:///catalog.db')``` to ```engine = create_engine('postgresql://catalog:password@localhost/catalog')``` as we'll be using postgresql for this project<br> (edit this line whererver you write create_engine command.
 
 ``` 
 sudo apt-get install python-pip
@@ -247,3 +247,54 @@ After that execute the below 2 commands
 sudo a2ensite catalog
 sudo service apache2 restart
 ```
+
+# Install PostgreSQL
+
+Install postgresql and login as user postgres
+
+```
+sudo apt-get install postgresql postgresql-contrib
+sudo su - postgres
+psql
+```
+
+Do the following database operations in psql
+<br>
+
+ ```
+ CREATE USER catalog WITH PASSWORD 'catalog-pw';
+ ALTER USER catalog CREATEDB;
+ CREATE DATABASE catalog WITH OWNER catalog;
+ \c catalog
+ REVOKE ALL ON SCHEMA public FROM public;
+ GRANT ALL ON SCHEMA public TO catalog;
+ \q
+ ```
+ 
+ <br>
+ 
+ exit as postgres user and restart postgresql using 
+ 
+ ```sudo service postgresql restart```
+ 
+ # Run the Application
+ 
+ First change the create_engine line everywhere as mentioned above. Next, change client_secrets.json file path everywhere to absolute path like /var/www/catalog/catalog/client_secrets.json
+```
+cd /var/www/catalog/catalog
+python database_setup.py
+python lotsofmenus.py
+sudo service apache2 restart
+python __init__.py
+```
+
+Now, we should be able to access our item catalog website in our public IP (http://35.154.72.191). One last thing to be done to get our application completely working is to modify our client_secrets json file. Add host name and public IP address to redirect uri's and javascript origins. 
+
+# Attributions
+
+[Udacity Course Videos](https://classroom.udacity.com/courses/ud299-nd) <br>
+[Discussion Forum](https://discussions.udacity.com/c/nd004-p7-linux-based-server-configuration) <br>
+[Digital Ocean Instructions for initial setup](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04) <br>
+[Digital Ocean Instructions to Deploy Flask Applications](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps) <br>
+[Digital Ocean Instructions to Install Postgresql](https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)<br>
+[Amazing readme](https://github.com/anumsh/Linux-Server-Configuration)<br>
